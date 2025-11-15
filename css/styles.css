@@ -1,0 +1,230 @@
+/* Tipografías (prioriza el look del diseño) */
+@font-face {
+  font-family: "ArialMTStdExtraBold";
+  src: url("../fuentes/tipos/ArialMTStd-ExtraBold.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ArialMTStdMedium";
+  src: url("../fuentes/tipos/ArialMTStd-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --blue-1: #0e2740; /* topo */
+  --blue-2: #1e4c6e; /* medio */
+  --blue-3: #163a58; /* base */
+  --gold: #b6985a;
+  --gold-shadow: #8a6d38;
+  --blue-text: #0f4771;
+  --card-border: #ededed;
+  --header-h: clamp(260px, 15%, 300px);
+  --footer-h: clamp(340px, 20%, 400px);
+}
+
+/* Layout base */
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  display: grid;
+  place-items: center;
+  background: #f6f7f9;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.screen {
+  width: min(100vw - 32px, 1080px);
+  aspect-ratio: 1080 / 1920; /* Maqueta 1080x1920 prioritaria */
+  max-height: calc(100vh - 32px);
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 2px solid var(--card-border);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(180deg, var(--blue-1) 0%, var(--blue-2) 50%, var(--blue-3) 100%);
+}
+
+/* Decoraciones */
+.header-deco, .footer-deco {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* cubre todo el ancho */
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+.header-deco { top: 0; height: var(--header-h); }
+.footer-deco { bottom: 0; height: var(--footer-h); }
+.footer-logo {
+  position: absolute;
+  bottom: clamp(16px, 2.4vh, 40px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 1.4vh, 14px);
+}
+.logo-sun {
+  width: clamp(84px, 16vh, 240px);
+  height: auto;
+}
+.logo-word {
+  width: clamp(220px, 22vh, 360px);
+  height: auto;
+}
+
+/* Animación de rayos del sol (SVG inline) */
+#sun-rays {
+  /* Rotar alrededor del centro del sol usando coordenadas del viewBox */
+  transform-box: view-box;
+  transform-origin: 109.5px 94px;
+}
+
+/* Contenido central */
+.content {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translateX(-50%);
+  width: 78%;
+  text-align: center;
+}
+.title {
+  color: #fff;
+  margin: 0 0 48px 0;
+  line-height: 1.12;
+  font-family: "ArialMTStdExtraBold", Arial, sans-serif;
+  font-size: clamp(32px, 5.2vh, 96px);
+  text-shadow: 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+.play-btn {
+  cursor: pointer;
+  border: none;
+  color: #fff;
+  background: var(--gold);
+  padding: clamp(12px, 2.6vh, 24px) clamp(36px, 5.6vh, 56px);
+  border-radius: 48px;
+  font-family: "ArialMTStdExtraBold", Arial, sans-serif;
+  font-size: clamp(20px, 2.4vh, 36px);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 10px 0 var(--gold-shadow), 0 14px 18px rgba(0, 0, 0, 0.2);
+  animation: pulse 2.8s ease-in-out infinite;
+  transform-origin: center;
+  transition: filter 200ms ease;
+}
+.play-btn:active {
+  filter: brightness(0.95);
+  box-shadow: 0 6px 0 var(--gold-shadow), 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsivo básico: cuando el alto sea pequeño, compacta espacios */
+@media (max-height: 700px) {
+  .content { top: 24%; }
+  .title { margin-bottom: 32px; }
+}
+/* Capas: asegurar contenido y logo por encima del header/footer */
+.content { z-index: 1; }
+.footer-logo { z-index: 2; }
+
+/* Badge del header (mejorado) */
+.header-badge {
+  position: absolute;
+  top: calc(var(--header-h) - clamp(24px, 3vh, 36px)); /* cerca del borde inferior */
+  left: 50%;
+  transform: translate(-50%, -18%); /* sobresale hacia abajo */
+  color: #fff;
+  background: linear-gradient(180deg, #c9aa6a, var(--gold));
+  padding: clamp(12px, 2vh, 16px) clamp(26px, 3.2vh, 32px);
+  border-radius: 18px;
+  border: 2px solid rgba(255,255,255,0.85);
+  font-family: "ArialMTStdMedium", Arial, sans-serif;
+  font-size: clamp(18px, 2.4vh, 22px);
+  box-shadow: 0 8px 0 var(--gold-shadow), 0 14px 22px rgba(0,0,0,.22);
+  z-index: 3;
+}
+
+/* Página de juego */
+.game-content {
+  position: absolute;
+  left: 50%;
+  top: 22%;
+  transform: translateX(-50%);
+  width: 80%;
+}
+.question-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.22);
+  padding: clamp(18px, 3vh, 28px) clamp(20px, 3.2vh, 32px);
+  margin-bottom: clamp(22px, 3vh, 28px);
+}
+.question-title {
+  margin: 0;
+  color: var(--blue-text);
+  font-family: "ArialMTStdExtraBold", Arial, sans-serif;
+  font-size: clamp(22px, 3.4vh, 38px);
+  line-height: 1.2;
+  text-align: center;
+}
+.answers { display: grid; gap: clamp(16px, 2.4vh, 18px); }
+.answer-btn {
+  background: #fff;
+  color: var(--blue-text);
+  border: none;
+  border-radius: 16px;
+  padding: clamp(12px, 2.6vh, 18px) clamp(16px, 3vh, 22px);
+  font-family: "ArialMTStdExtraBold", Arial, sans-serif;
+  font-size: clamp(18px, 2.8vh, 22px);
+  box-shadow: 0 6px 0 rgba(0,0,0,.18), 0 10px 18px rgba(0,0,0,.14);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 80ms ease, filter 200ms ease;
+}
+.answer-btn:active { transform: translateY(4px); box-shadow: 0 3px 0 rgba(0,0,0,.18); }
+.answer-selected { filter: brightness(0.97); }
+
+/* Animación de aparición palabra por palabra */
+.title-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
+  animation: wordIn 900ms ease both;
+}
+@keyframes wordIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Pulso del botón para llamar la atención */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.08); }
+  55% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* Accesibilidad: reducir animación si el usuario lo pide */
+@media (prefers-reduced-motion: reduce) {
+  .title-word { animation: none; opacity: 1; transform: none; }
+  .play-btn { animation: none; }
+}

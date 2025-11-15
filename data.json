@@ -1,0 +1,59 @@
+{
+  "preguntas": [
+    {
+      "pregunta": "¿Quién es el mecánico de mina que aparece en el video?",
+      "opciones": ["María", "Juan", "Pedro", "Luis"],
+      "respuesta_correcta": "Juan"
+    },
+    {
+      "pregunta": "¿De dónde es Juan, Mecánico de Mina, que aparece en el video?",
+      "opciones": ["Iglesia", "Jáchal", "Calingasta", "Ullum"],
+      "respuesta_correcta": "Jáchal"
+    },
+    {
+      "pregunta": "¿Qué tipo de camiones conduce María?",
+      "opciones": ["Camiones urbanos", "Camiones fuera de ruta", "Camiones de carga liviana", "Camiones eléctricos"],
+      "respuesta_correcta": "Camiones fuera de ruta"
+    },
+    {
+      "pregunta": "¿Cuántas toneladas puede cargar un Fuera de Ruta en cada viaje?",
+      "opciones": ["150 toneladas", "200 toneladas", "240 toneladas", "300 toneladas"],
+      "respuesta_correcta": "240 toneladas"
+    },
+    {
+      "pregunta": "¿Qué proceso ocurre en la etapa de trituración?",
+      "opciones": ["Se funde el oro", "Se mezcla el mineral con cal sanjuanina", "Se reciclan los neumáticos", "Se genera energía eólica"],
+      "respuesta_correcta": "Se mezcla el mineral con cal sanjuanina"
+    },
+    {
+      "pregunta": "¿De dónde proviene la energía limpia que usa Veladero?",
+      "opciones": ["De una planta solar en San Juan", "De una línea eléctrica desde Chile", "De un río cercano", "De baterías recargables"],
+      "respuesta_correcta": "De una línea eléctrica desde Chile"
+    },
+    {
+      "pregunta": "¿Cuál es el porcentaje de reducción de emisiones que logró Veladero con la energía sustentable?",
+      "opciones": ["10%", "15%", "20%", "25%"],
+      "respuesta_correcta": "20%"
+    },
+    {
+      "pregunta": "¿Qué se obtiene en la planta luego de filtrar y fundir el mineral?",
+      "opciones": ["Oro puro", "Doré (mezcla de oro y plata)", "Plata pura", "Roca triturada"],
+      "respuesta_correcta": "Doré (mezcla de oro y plata)"
+    },
+    {
+      "pregunta": "¿Qué porcentaje de eficiencia en el uso del agua alcanzamos gracias a nuestro circuito cerrado de Producción?",
+      "opciones": ["85%", "90%", "96%", "100%"],
+      "respuesta_correcta": "96%"
+    },
+    {
+      "pregunta": "¿Con qué frecuencia se hacen controles de calidad del agua?",
+      "opciones": ["Mensualmente", "Cada semana", "Cada mes", "Cada año"],
+      "respuesta_correcta": "Cada semana"
+    },
+    {
+      "pregunta": "¿Qué se financia con una parte de las ventas de Veladero?",
+      "opciones": ["Obras de riego, hospitales y energía para comunidades", "Nuevas maquinarias para la mina", "Campañas publicitarias", "Construcción de hoteles"],
+      "respuesta_correcta": "Obras de riego, hospitales y energía para comunidades"
+    }
+  ]
+}
