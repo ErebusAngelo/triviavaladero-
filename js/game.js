@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const root = document.querySelector('.game-content');
   if (!root) return;
 
-  const state = { preguntas: [], index: 0 };
+  const state = { preguntas: [], index: 0, correctas: 0 };
 
   try {
     // Carga directa y robusta del JSON
@@ -39,11 +39,7 @@ function renderPregunta(root, state) {
 
   const q = state.preguntas[state.index];
   if (!q) {
-    root.innerHTML = `
-      <div class="question-card">
-        <h2 class="question-title">¡Gracias por jugar!</h2>
-      </div>
-    `;
+    mostrarPantallaFinal(root, state);
     return;
   }
 
@@ -60,14 +56,59 @@ function renderPregunta(root, state) {
 
   root.querySelectorAll('.answer-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      // feedback mínimo y avanzar
-      btn.classList.add('answer-selected');
+      const respuestaSeleccionada = btn.getAttribute('data-opcion');
+      const esCorrecta = respuestaSeleccionada === q.respuesta_correcta;
+      
+      // Deshabilitar todos los botones
+      root.querySelectorAll('.answer-btn').forEach(b => {
+        b.disabled = true;
+        // Marcar la correcta en verde
+        if (b.getAttribute('data-opcion') === q.respuesta_correcta) {
+          b.classList.add('correct');
+        }
+      });
+      
+      // Si seleccionó incorrecta, marcarla en rojo
+      if (!esCorrecta) {
+        btn.classList.add('incorrect');
+      } else {
+        state.correctas++;
+      }
+      
+      // Avanzar después de mostrar el feedback
       setTimeout(() => {
         state.index++;
         renderPregunta(root, state);
-      }, 450);
+      }, 1500);
     });
   });
+}
+
+function mostrarPantallaFinal(root, state) {
+  const total = state.preguntas.length;
+  const correctas = state.correctas;
+  
+  if (correctas >= 4) {
+    // Pantalla de éxito
+    root.innerHTML = `
+      <div style="text-align: center; margin-top: clamp(40px, 8vh, 80px);">
+        <h1 style="color: #b6985a; font-family: 'ArialMTStdExtraBold', Arial, sans-serif; font-size: clamp(42px, 7vh, 72px); margin: 0 0 clamp(32px, 5vh, 48px) 0;">¡Felicitaciones!</h1>
+        <p style="color: #fff; font-family: 'ArialMTStdExtraBold', Arial, sans-serif; font-size: clamp(24px, 4vh, 38px); line-height: 1.3; margin: 0;">
+          Respondiste<br>correctamente<br>la trivia
+        </p>
+      </div>
+    `;
+  } else {
+    // Pantalla para reintentar
+    root.innerHTML = `
+      <div style="text-align: center; margin-top: clamp(40px, 8vh, 80px);">
+        <h1 style="color: #b6985a; font-family: 'ArialMTStdExtraBold', Arial, sans-serif; font-size: clamp(42px, 7vh, 72px); margin: 0 0 clamp(32px, 5vh, 48px) 0;">¡Inténtalo de nuevo!</h1>
+        <p style="color: #fff; font-family: 'ArialMTStdExtraBold', Arial, sans-serif; font-size: clamp(24px, 4vh, 38px); line-height: 1.3; margin: 0;">
+          Respondiste correctamente<br>${correctas} de ${total} preguntas.<br>Necesitas al menos 4<br>para ganar.
+        </p>
+      </div>
+    `;
+  }
 }
 
 function escapeHtml(str) {
