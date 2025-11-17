@@ -2,11 +2,14 @@ import { renderLayout } from './layout.js';
 
 // Confeti al ganar: carga dinámica vía CDN y disparos temporizados
 let confettiTimer = null;
+async function ensureConfetti() {
+  if (!window.confetti) {
+    await import('https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js');
+  }
+}
 async function fireConfetti(durationMs = 3000) {
   try {
-    if (!window.confetti) {
-      await import('https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js');
-    }
+    await ensureConfetti();
     const end = Date.now() + durationMs;
     const colors = ['#ffffff', '#b6985a', '#0f4771'];
     if (confettiTimer) { clearInterval(confettiTimer); confettiTimer = null; }
@@ -36,6 +39,28 @@ async function fireConfetti(durationMs = 3000) {
     }, 250);
   } catch (e) {
     console.warn('No se pudo cargar confetti:', e);
+  }
+}
+
+// Burst especial para 5/5 correctas
+async function grandBurstConfetti() {
+  try {
+    await ensureConfetti();
+    const colors = ['#ffffff', '#b6985a', '#0f4771'];
+    // Centro superior
+    window.confetti({
+      particleCount: 180,
+      startVelocity: 60,
+      spread: 100,
+      ticks: 300,
+      origin: { x: 0.5, y: 0.15 },
+      colors
+    });
+    // Laterales de apoyo
+    setTimeout(() => window.confetti({ particleCount: 120, spread: 90, startVelocity: 52, origin: { x: 0.2, y: 0.2 }, colors }), 250);
+    setTimeout(() => window.confetti({ particleCount: 120, spread: 90, startVelocity: 52, origin: { x: 0.8, y: 0.2 }, colors }), 500);
+  } catch (e) {
+    console.warn('No se pudo lanzar burst de confetti:', e);
   }
 }
 
@@ -139,6 +164,9 @@ function mostrarPantallaFinal(root, state) {
       </div>
     `;
     fireConfetti(3200);
+    if (correctas === total) {
+      grandBurstConfetti();
+    }
   } else {
     // Pantalla para reintentar
     root.innerHTML = `
