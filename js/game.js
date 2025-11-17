@@ -1,5 +1,44 @@
 import { renderLayout } from './layout.js';
 
+// Confeti al ganar: carga dinámica vía CDN y disparos temporizados
+let confettiTimer = null;
+async function fireConfetti(durationMs = 3000) {
+  try {
+    if (!window.confetti) {
+      await import('https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js');
+    }
+    const end = Date.now() + durationMs;
+    const colors = ['#ffffff', '#b6985a', '#0f4771'];
+    if (confettiTimer) { clearInterval(confettiTimer); confettiTimer = null; }
+    confettiTimer = setInterval(() => {
+      // Izquierda
+      window.confetti({
+        particleCount: 35,
+        angle: 60,
+        spread: 55,
+        startVelocity: 42,
+        origin: { x: 0, y: 0.6 },
+        colors
+      });
+      // Derecha
+      window.confetti({
+        particleCount: 35,
+        angle: 120,
+        spread: 55,
+        startVelocity: 42,
+        origin: { x: 1, y: 0.6 },
+        colors
+      });
+      if (Date.now() > end) {
+        clearInterval(confettiTimer);
+        confettiTimer = null;
+      }
+    }, 250);
+  } catch (e) {
+    console.warn('No se pudo cargar confetti:', e);
+  }
+}
+
 // Inicializa layout común con badge en header
 document.addEventListener('DOMContentLoaded', async () => {
   renderLayout({ badgeText: 'Minería para un futuro más brillante' });
@@ -92,22 +131,33 @@ function mostrarPantallaFinal(root, state) {
     // Pantalla de éxito
     root.innerHTML = `
       <div style="text-align: center; margin-top: clamp(40px, 8vh, 80px);">
-        <h1 style="color: #b6985a; font-family: 'ArialMTStdExtraBold', Arial, sans-serif; font-size: clamp(42px, 7vh, 72px); margin: 0 0 clamp(32px, 5vh, 48px) 0;">¡Felicitaciones!</h1>
-        <p style="color: #fff; font-family: 'ArialMTStdExtraBold', Arial, sans-serif; font-size: clamp(24px, 4vh, 38px); line-height: 1.3; margin: 0;">
+        <h1 class="celebrate-title" style="color: #b6985a; font-family: 'ArialMTStdExtraBold', Arial, sans-serif; font-size: clamp(42px, 7vh, 86px); margin: 0 0 clamp(24px, 4vh, 36px) 0; letter-spacing: -0.03em; line-height: 1.12; margin-top: 20%;">¡Felicitaciones!</h1>
+        <p style="color: #fff; font-family: 'Arial MT Std', Arial, sans-serif; font-weight: 700; font-size: clamp(24px, 4vh, 70px); line-height: 1.12; letter-spacing: -0.03em; margin: 0;">
           Respondiste<br>correctamente<br>la trivia
         </p>
+        <button class="play-btn restart-btn" type="button" aria-label="Reiniciar juego">REINICIAR</button>
       </div>
     `;
+    fireConfetti(3200);
   } else {
     // Pantalla para reintentar
     root.innerHTML = `
       <div style="text-align: center; margin-top: clamp(40px, 8vh, 80px);">
-        <h1 style="color: #b6985a; font-family: 'ArialMTStdExtraBold', Arial, sans-serif; font-size: clamp(42px, 7vh, 72px); margin: 0 0 clamp(32px, 5vh, 48px) 0;">¡Inténtalo de nuevo!</h1>
-        <p style="color: #fff; font-family: 'ArialMTStdExtraBold', Arial, sans-serif; font-size: clamp(24px, 4vh, 38px); line-height: 1.3; margin: 0;">
+        <h1 class="celebrate-title" style="color: #b6985a; font-family: 'ArialMTStdExtraBold', Arial, sans-serif; font-size: clamp(42px, 7vh, 86px); margin: 0 0 clamp(24px, 4vh, 36px) 0; letter-spacing: -0.03em; line-height: 1.12; margin-top: 20%;">¡Inténtalo de nuevo!</h1>
+        <p style="color: #fff; font-family: 'Arial MT Std', Arial, sans-serif; font-weight: 700; font-size: clamp(24px, 4vh, 70px); line-height: 1.12; letter-spacing: -0.03em; margin: 0;">
           Respondiste correctamente<br>${correctas} de ${total} preguntas.<br>Necesitas al menos 4<br>para ganar.
         </p>
+        <button class="play-btn restart-btn" type="button" aria-label="Reiniciar juego">REINICIAR</button>
       </div>
     `;
+  }
+
+  // Reinicio del juego
+  const restart = root.querySelector('.restart-btn');
+  if (restart) {
+    restart.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
   }
 }
 

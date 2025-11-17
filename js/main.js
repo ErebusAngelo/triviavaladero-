@@ -17,6 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const w = document.createElement('span');
       w.className = 'title-word';
       w.textContent = word;
+      if (word.toLowerCase() === 'brillante') {
+        w.classList.add('shine');
+      }
+      if (word.toLowerCase() === 'más' || word.toLowerCase() === 'mas') {
+        w.classList.add('word-mas');
+        const lower = word.toLowerCase();
+        const base = lower === 'mas' ? 'ma\u0301' : 'má';
+        w.innerHTML = `<span class="mas-base">${base}</span><span class="mas-s">s</span>`;
+      }
       w.style.animationDelay = `${delay}s`;
       delay += 0.25; // escalonado más lento
       lineEl.appendChild(w);

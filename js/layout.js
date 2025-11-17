@@ -37,11 +37,25 @@ export function renderLayout({ badgeText } = {}) {
     screen.appendChild(footer);
   }
 
-  // Badge del header (opcional)
-  if (badgeText && !screen.querySelector('.header-badge')) {
-    const badge = document.createElement('div');
-    badge.className = 'header-badge';
-    badge.textContent = badgeText;
-    screen.appendChild(badge);
+  // Título directo en el header (opcional)
+  if (badgeText && !screen.querySelector('.header-title')) {
+    const titleEl = document.createElement('h1');
+    titleEl.className = 'header-title';
+    const text = String(badgeText).trim();
+    const parts = text.split(/\s+/);
+    const main = parts.shift() || '';
+    let sub = parts.join(' ');
+    // Brillo en “brillante”
+    sub = sub.replace(/(brillante)/i, '<span class="shine">$1</span>');
+    // Fix para la palabra “más”
+    sub = sub.replace(/\b(m[a\u00E1]s)\b/i, (m) => {
+      const base = /mas/i.test(m) ? 'ma\u0301' : 'má';
+      return `<span class="word-mas"><span class="mas-base">${base}</span><span class="mas-s">s</span></span>`;
+    });
+    titleEl.innerHTML = `
+      <span class="title-main">${main}</span>
+      <span class="title-sub">${sub}</span>
+    `;
+    screen.appendChild(titleEl);
   }
 }
